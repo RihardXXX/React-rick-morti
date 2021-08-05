@@ -1,0 +1,18 @@
+.random-planet {
+  margin: 30px auto;
+  width: 65%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.wrapper-random-planet {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.random-planet-img img {
+  border-radius: 5px;
+  width: 250px;
+  height: 250px;
+}

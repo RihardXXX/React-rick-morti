@@ -1,11 +1,6 @@
-// import './libs/bootstrap.min.css';
-import api from './services/api';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const { getAllPeople, getPerson } = api;
+import App from './components/app';
 
-// test('https://swapi.dev/api/people/1/');
-// getAllPeople().then((res) => console.log(res.results));
-// console.log(result);
-getPerson(1).then((res) => console.log(res));
-
-// console.log('start');
+ReactDOM.render(<App />, document.getElementById('root'));

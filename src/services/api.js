@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const instance = axios.create({
   baseURL: 'https://swapi.dev/api/',
-  timeout: 1000,
+  // timeout: 1000,
 });
 
 const people = 'people';
@@ -49,15 +49,31 @@ const getStarship = async (id) => {
 };
 
 // =================================================================
+
+const extractId = (item) => {
+  const regExp = /\/([0-9]+)\/$/;
+  return item.url.match(regExp)[1];
+};
+
+const transformPlanet = (planet) => {
+  return {
+    id: extractId(planet),
+    name: planet.name,
+    population: planet.population,
+    diameter: planet.diameter,
+    rotationPeriod: planet.rotation_period,
+  };
+};
+
 const getAllPlanets = async () => {
   const res = await getResource(`/${planets}`);
   // тут есть пагинация в res
-  return res.results;
+  return res.results.map((planet) => transformPlanet(planet));
 };
 
 const getPlanet = async (id) => {
   const res = await await getResource(`/${planets}/${id}`);
-  return res;
+  return transformPlanet(res);
 };
 
 const api = {
