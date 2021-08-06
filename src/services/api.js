@@ -3,6 +3,7 @@ const axios = require('axios');
 const instance = axios.create({
   baseURL: 'https://swapi.dev/api/',
   // timeout: 1000,
+  // crossDomain: true,
 });
 
 const people = 'people';
@@ -12,13 +13,14 @@ const planets = 'planets';
 const getResource = async (url) => {
   try {
     const response = await instance.get(url);
+    console.log(response);
     if (response.status === 200) {
       return response.data;
     } else {
       console.log('errors');
     }
   } catch (error) {
-    console.error('error: ', error);
+    console.error('error: ----', error);
   }
 };
 
@@ -76,7 +78,7 @@ const getPlanet = async (id) => {
   return transformPlanet(res);
 };
 
-const api = {
+export {
   getResource,
   getAllPeople,
   getPerson,
@@ -85,5 +87,3 @@ const api = {
   getAllPlanets,
   getPlanet,
 };
-
-export default api;
