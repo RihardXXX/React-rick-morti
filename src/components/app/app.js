@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Header from '../header';
-import RandomPlanet from '../random-planet';
+import RandomCharacter from '../random-character';
 import ItemList from '../item-list';
 import PersonDetails from '../person-details';
 
@@ -11,6 +11,7 @@ import './app.css';
 export default class App extends Component {
   state = {
     randomPlanetStatus: true,
+    idCharacterDetail: null,
   };
 
   onRandomPlanet = () => {
@@ -19,29 +20,35 @@ export default class App extends Component {
     }));
   };
 
-  render() {
-    const { randomPlanetStatus } = this.state;
+  selectedCharacter = (id) => {
+    this.setState((state) => ({ idCharacterDetail: id }));
+  };
 
-    const randomPlanetRender = randomPlanetStatus ? <RandomPlanet /> : null;
+  render() {
+    const { randomPlanetStatus, idCharacterDetail } = this.state;
+
+    const RandomCharacterRender = randomPlanetStatus ? (
+      <RandomCharacter />
+    ) : null;
 
     return (
       <div className="container">
         <Header />
         <div className="row">
-          <div className="col-md-12">{randomPlanetRender}</div>
+          <div className="col-md-12">{RandomCharacterRender}</div>
           <button
             className="toggle-planet btn btn-warning btn-lg col-md-4 m-center m-bottom"
             onClick={this.onRandomPlanet}
           >
-            Toggle Random Planet
+            Toggle Random Character
           </button>
         </div>
         <div className="row">
           <div className="col-md-6">
-            <ItemList />
+            <ItemList selectedCharacter={this.selectedCharacter} />
           </div>
           <div className="col-md-6">
-            <PersonDetails />
+            <PersonDetails idCharacterDetail={idCharacterDetail} />
           </div>
         </div>
       </div>

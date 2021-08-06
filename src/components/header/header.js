@@ -3,7 +3,7 @@ import React from 'react';
 import './header.css';
 
 const Header = () => {
-  const names = ['people', 'planets', 'starships'];
+  const names = ['Character', 'Location', 'Episode'];
 
   const links = names.map((name) => {
     return (

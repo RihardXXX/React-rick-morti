@@ -2,44 +2,42 @@ import React, { Component } from 'react';
 import Loader from '../loader';
 import ErrorMessage from '../error';
 
-import { getPlanet } from '../../services/api';
+import { getCharacter } from '../../services/api';
 
 import './random-planet.css';
 
-export default class RandomPlanet extends Component {
+export default class RandomCharacter extends Component {
   state = {
-    planet: {},
+    character: {},
     loading: true,
     error: false,
   };
 
-  constructor() {
-    super();
-    setInterval(this.updatePlanet, 5000);
+  componentDidMount() {
+    this.updateCharacter();
+    setInterval(this.updateCharacter, 2000);
   }
 
-  onLoadedPlanet = (planet) => {
-    this.setState((state) => ({ planet: planet, loading: false }));
+  onLoadedCharacter = (character) => {
+    this.setState((state) => ({ character: character, loading: false }));
   };
 
   onError = () => {
     this.setState((state) => ({ loading: false, error: true }));
   };
 
-  updatePlanet = () => {
-    console.log('updatePlanet');
-    const id = Math.floor(Math.random() * 25) + 2;
-
-    getPlanet(id).then(this.onLoadedPlanet).catch(this.onError);
+  updateCharacter = () => {
+    const id = Math.floor(Math.random() * 100) + 2;
+    getCharacter(id).then(this.onLoadedCharacter).catch(this.onError);
   };
 
   render() {
-    const { planet, loading, error } = this.state;
+    const { character, loading, error } = this.state;
 
     const errorMsg = error ? <ErrorMessage /> : null;
     const loadingView = loading ? <Loader /> : null;
-    const planetView = !(loading || error) ? (
-      <PlanetView planet={planet} />
+    const characterView = !(loading || error) ? (
+      <CharacterView character={character} />
     ) : null;
 
     return (
@@ -47,36 +45,34 @@ export default class RandomPlanet extends Component {
         <div className="card border-primary mb-3">
           {errorMsg}
           {loadingView}
-          {planetView}
+          {characterView}
         </div>
       </div>
     );
   }
 }
 
-const PlanetView = ({ planet }) => {
-  const { name, population, diameter, rotationPeriod, id } = planet;
+const CharacterView = ({ character }) => {
+  const { name, gender, image, species, type, id } = character;
 
   return (
     <React.Fragment>
       <div className="card-body">
         <div className="wrapper-random-planet">
           <div className="random-planet-img">
-            <img
-              src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
-            />
+            <img src={image} />
           </div>
           <div className="random-planet-text">
-            <h3>Planet {name}</h3>
+            <h3>{name}</h3>
             <ul className="list-group">
               <li className="list-group-item d-flex justify-content-between align-items-center">
-                population: {population}
+                gender: {gender}
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
-                rotation-period: {rotationPeriod}
+                species: {species}
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
-                diameter: {diameter}
+                type: {type}
               </li>
             </ul>
           </div>
