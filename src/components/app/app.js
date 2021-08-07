@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 
 import Header from '../header';
 import RandomCharacter from '../random-character';
-import ItemList from '../item-list';
-import PersonDetails from '../person-details';
+import CharacterPage from '../character-page';
 
 import '../../libs/bootstrap.min.css';
 import './app.css';
@@ -11,7 +10,6 @@ import './app.css';
 export default class App extends Component {
   state = {
     randomPlanetStatus: true,
-    idCharacterDetail: 1,
   };
 
   onRandomPlanet = () => {
@@ -20,12 +18,8 @@ export default class App extends Component {
     }));
   };
 
-  selectedCharacter = (id) => {
-    this.setState((state) => ({ idCharacterDetail: id }));
-  };
-
   render() {
-    const { randomPlanetStatus, idCharacterDetail } = this.state;
+    const { randomPlanetStatus } = this.state;
 
     const RandomCharacterRender = randomPlanetStatus ? (
       <RandomCharacter />
@@ -42,14 +36,7 @@ export default class App extends Component {
           >
             Toggle Random Character
           </button>
-        </div>
-        <div className="row">
-          <div className="col-md-6">
-            <ItemList selectedCharacter={this.selectedCharacter} />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails idCharacterDetail={idCharacterDetail} />
-          </div>
+          <CharacterPage />
         </div>
       </div>
     );

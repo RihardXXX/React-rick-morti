@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Loader from '../loader';
 import ErrorMessage from '../error';
+import ErrorButton from '../error-button';
+
 import './person-details.css';
 
 import { getCharacter } from '../../services/api';
@@ -18,7 +20,6 @@ export default class PersonDetails extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.idCharacterDetail !== prevProps.idCharacterDetail) {
-      this.setState((state) => ({ loading: true }));
       this.onLoadedPersonDetail();
     }
   }
@@ -34,6 +35,7 @@ export default class PersonDetails extends Component {
   onLoadedPersonDetail() {
     const { idCharacterDetail } = this.props;
     if (!idCharacterDetail) return;
+    this.setState((state) => ({ loading: true }));
     getCharacter(idCharacterDetail)
       .then(this.setPersonDetail)
       .catch(this.onError);
@@ -52,6 +54,7 @@ export default class PersonDetails extends Component {
       <div className="person-details">
         <div className="card border-primary mb-3">
           <div className="card-body">
+            <ErrorButton />
             <div className="wrapper-person-details">
               {errorRender}
               {loaderRender}
@@ -65,7 +68,7 @@ export default class PersonDetails extends Component {
 }
 
 const PersonDetail = ({ personDetail }) => {
-  const { name, gender, image, species, type, id } = personDetail;
+  const { name, gender, image, species, type } = personDetail;
   return (
     <React.Fragment>
       <div className="person-detail-img">

@@ -32,6 +32,8 @@ export default class RandomCharacter extends Component {
 
   updateCharacter = () => {
     const id = Math.floor(Math.random() * 100) + 2;
+    // const id = 50000000000000000;
+    // this.setState((state) => ({ loading: true }));
     getCharacter(id).then(this.onLoadedCharacter).catch(this.onError);
   };
 
@@ -57,7 +59,7 @@ export default class RandomCharacter extends Component {
 }
 
 const CharacterView = ({ character }) => {
-  const { name, gender, image, species, type, id } = character;
+  const { name, gender, image, species, type } = character;
 
   return (
     <React.Fragment>

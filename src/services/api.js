@@ -8,7 +8,7 @@ const instance = axios.create({
 
 const character = 'character';
 const starships = 'starships';
-const planets = 'planets';
+// const planets = 'planets';
 
 const getResource = async (url) => {
   try {
