@@ -32,7 +32,7 @@ export default class ItemList extends Component {
     return arr.map((item) => {
       return (
         <a
-          href="#"
+          // href="#"
           key={item.id}
           className="list-group-item list-group-item-action"
           onClick={() => this.props.selectedCharacter(item.id)}

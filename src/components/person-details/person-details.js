@@ -1,35 +1,90 @@
-import React from 'react';
-
+import React, { Component } from 'react';
+import Loader from '../loader';
+import ErrorMessage from '../error';
 import './person-details.css';
 
-const PersonDetails = () => {
-  return (
-    <div className="person-details">
-      <div className="card border-primary mb-3">
-        <div className="card-body">
-          <div className="wrapper-person-details">
-            <div className="person-detail-img">
-              <img src="https://media.istockphoto.com/photos/sunrise-picture-id506472311?k=6&m=506472311&s=612x612&w=0&h=UQ1-M3G2K125Y9UWX5EGv63bgzdHb4HPRLfn8Z6rd3Y=" />
-            </div>
-            <div className="random-planet-text">
-              <h3>Planet name</h3>
-              <ul className="list-group">
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  population
-                </li>
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  population
-                </li>
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  population
-                </li>
-              </ul>
+import { getCharacter } from '../../services/api';
+
+export default class PersonDetails extends Component {
+  state = {
+    loading: true,
+    personDetail: null,
+    error: false,
+  };
+
+  componentDidMount() {
+    this.onLoadedPersonDetail();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.idCharacterDetail !== prevProps.idCharacterDetail) {
+      this.setState((state) => ({ loading: true }));
+      this.onLoadedPersonDetail();
+    }
+  }
+
+  setPersonDetail = (character) => {
+    this.setState((state) => ({ loading: false, personDetail: character }));
+  };
+
+  onError = (err) => {
+    this.setState((state) => ({ error: true }));
+  };
+
+  onLoadedPersonDetail() {
+    const { idCharacterDetail } = this.props;
+    if (!idCharacterDetail) return;
+    getCharacter(idCharacterDetail)
+      .then(this.setPersonDetail)
+      .catch(this.onError);
+  }
+
+  render() {
+    const { loading, personDetail, error } = this.state;
+
+    const errorRender = error ? <ErrorMessage /> : null;
+    const loaderRender = loading ? <Loader /> : null;
+    const personDetailRender = !(loading || error) ? (
+      <PersonDetail personDetail={personDetail} />
+    ) : null;
+
+    return (
+      <div className="person-details">
+        <div className="card border-primary mb-3">
+          <div className="card-body">
+            <div className="wrapper-person-details">
+              {errorRender}
+              {loaderRender}
+              {personDetailRender}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    );
+  }
+}
+
+const PersonDetail = ({ personDetail }) => {
+  const { name, gender, image, species, type, id } = personDetail;
+  return (
+    <React.Fragment>
+      <div className="person-detail-img">
+        <img src={image} />
+      </div>
+      <div className="random-planet-text">
+        <h3>{name}</h3>
+        <ul className="list-group">
+          <li className="list-group-item d-flex justify-content-between align-items-center">
+            gender: {gender}
+          </li>
+          <li className="list-group-item d-flex justify-content-between align-items-center">
+            species: {species}
+          </li>
+          <li className="list-group-item d-flex justify-content-between align-items-center">
+            type: {type}
+          </li>
+        </ul>
+      </div>
+    </React.Fragment>
   );
 };
-
-export default PersonDetails;

@@ -15,7 +15,11 @@ export default class RandomCharacter extends Component {
 
   componentDidMount() {
     this.updateCharacter();
-    setInterval(this.updateCharacter, 2000);
+    this.interval = setInterval(this.updateCharacter, 2000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   onLoadedCharacter = (character) => {

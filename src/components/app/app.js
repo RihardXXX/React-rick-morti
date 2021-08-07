@@ -11,7 +11,7 @@ import './app.css';
 export default class App extends Component {
   state = {
     randomPlanetStatus: true,
-    idCharacterDetail: null,
+    idCharacterDetail: 1,
   };
 
   onRandomPlanet = () => {
