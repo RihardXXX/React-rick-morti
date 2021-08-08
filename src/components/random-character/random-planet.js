@@ -31,7 +31,7 @@ export default class RandomCharacter extends Component {
   };
 
   updateCharacter = () => {
-    const id = Math.floor(Math.random() * 100) + 2;
+    const id = Math.floor(Math.random() * 100) + 1;
     // const id = 50000000000000000;
     // this.setState((state) => ({ loading: true }));
     getCharacter(id).then(this.onLoadedCharacter).catch(this.onError);
@@ -66,7 +66,7 @@ const CharacterView = ({ character }) => {
       <div className="card-body">
         <div className="wrapper-random-planet">
           <div className="random-planet-img">
-            <img src={image} />
+            <img src={image} alt="img" />
           </div>
           <div className="random-planet-text">
             <h3>{name}</h3>

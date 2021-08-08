@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
+
 import Loader from '../loader';
 import Error from '../error';
-import { getAllCharacter } from '../../services/api';
 
 import './item-list.css';
+var classNames = require('classnames');
 
 export default class ItemList extends Component {
   state = {
-    characters: null,
+    itemList: null,
     loading: true,
     error: false,
   };
 
-  onLoadedCharacters = (characters) => {
+  onLoadedCharacters = (itemList) => {
     this.setState((state) => ({
-      characters: characters,
+      itemList: itemList,
       loading: false,
       error: false,
     }));
@@ -25,31 +26,37 @@ export default class ItemList extends Component {
   };
 
   componentDidMount() {
-    getAllCharacter().then(this.onLoadedCharacters).catch(this.onError);
+    const { getData } = this.props;
+    getData().then(this.onLoadedCharacters).catch(this.onError);
   }
 
-  renderCharacters = (arr) => {
+  renderItemList = (arr) => {
     return arr.map((item) => {
+      const css = classNames('list-group-item list-group-item-action cursor', {
+        active: this.props.active === item.id,
+      });
+
+      const label = this.props.children(item);
+
       return (
-        <a
-          // href="#"
+        <li
           key={item.id}
-          className="list-group-item list-group-item-action"
-          onClick={() => this.props.selectedCharacter(item.id)}
+          className={css}
+          onClick={() => this.props.selectedItem(item.id)}
         >
-          {item.name}
-        </a>
+          {label}
+        </li>
       );
     });
   };
 
   render() {
-    const { characters, loading, error } = this.state;
+    const { itemList, loading, error } = this.state;
 
     const errorRender = error ? <Error /> : null;
     const loadingRender = loading ? <Loader /> : null;
     const itemsRender = !(loading || error)
-      ? this.renderCharacters(characters)
+      ? this.renderItemList(itemList)
       : null;
 
     return (

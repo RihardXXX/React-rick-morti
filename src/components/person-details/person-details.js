@@ -72,7 +72,7 @@ const PersonDetail = ({ personDetail }) => {
   return (
     <React.Fragment>
       <div className="person-detail-img">
-        <img src={image} />
+        <img src={image} alt="img" />
       </div>
       <div className="random-planet-text">
         <h3>{name}</h3>

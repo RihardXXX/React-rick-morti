@@ -1,40 +1,49 @@
 import React, { Component } from 'react';
 import ItemList from '../item-list';
 import PersonDetails from '../person-details';
-import ErrorMessage from '../error';
+import ErrorBoundry from '../error-boundry';
+import Row from '../row';
+
+import { getAllCharacter } from '../../services/api';
 
 import './characterPage.css';
 
 export default class CharacterPage extends Component {
   state = {
-    hasError: false,
     idCharacterDetail: 1,
+    active: null,
   };
 
   selectedCharacter = (id) => {
-    this.setState((state) => ({ idCharacterDetail: id }));
+    this.setState((state) => ({
+      idCharacterDetail: id,
+      active: id,
+    }));
   };
 
-  componentDidCatch() {
-    this.setState((state) => ({ hasError: true }));
-  }
-
   render() {
-    const { idCharacterDetail, hasError } = this.state;
+    const { idCharacterDetail, active } = this.state;
 
-    if (hasError) {
-      return <ErrorMessage />;
-    }
-
-    return (
-      <div className="row">
-        <div className="col-md-6">
-          <ItemList selectedCharacter={this.selectedCharacter} />
-        </div>
-        <div className="col-md-6">
-          <PersonDetails idCharacterDetail={idCharacterDetail} />
-        </div>
-      </div>
+    const itemList = (
+      <ItemList
+        selectedItem={this.selectedCharacter}
+        getData={getAllCharacter}
+        active={active}
+      >
+        {(item) => (
+          <span>
+            {item.name}, {item.gender}
+          </span>
+        )}
+      </ItemList>
     );
+
+    const personDetails = (
+      <ErrorBoundry>
+        <PersonDetails idCharacterDetail={idCharacterDetail} />
+      </ErrorBoundry>
+    );
+
+    return <Row left={itemList} right={personDetails} />;
   }
 }
