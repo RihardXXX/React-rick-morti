@@ -1,32 +1,33 @@
 import React, { Component } from 'react';
 import ItemList from '../item-list';
-import PersonDetails from '../person-details';
+import ItemDetails from '../item-details';
+import { Record } from '../item-details/item-details';
 import ErrorBoundry from '../error-boundry';
 import Row from '../row';
 
-import { getAllCharacter } from '../../services/api';
+import { getAllCharacter, getCharacter } from '../../services/api';
 
 import './characterPage.css';
 
 export default class CharacterPage extends Component {
   state = {
-    idCharacterDetail: 1,
+    idItem: 1,
     active: null,
   };
 
-  selectedCharacter = (id) => {
+  selectedItem = (id) => {
     this.setState((state) => ({
-      idCharacterDetail: id,
+      idItem: id,
       active: id,
     }));
   };
 
   render() {
-    const { idCharacterDetail, active } = this.state;
+    const { idItem, active } = this.state;
 
     const itemList = (
       <ItemList
-        selectedItem={this.selectedCharacter}
+        selectedItem={this.selectedItem}
         getData={getAllCharacter}
         active={active}
       >
@@ -40,7 +41,10 @@ export default class CharacterPage extends Component {
 
     const personDetails = (
       <ErrorBoundry>
-        <PersonDetails idCharacterDetail={idCharacterDetail} />
+        <ItemDetails idItem={idItem} getData={getCharacter}>
+          <Record field="name" label="name" />
+          <Record field="gender" label="gender" />
+        </ItemDetails>
       </ErrorBoundry>
     );
 
