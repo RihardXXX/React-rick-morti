@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import ItemList from '../item-list';
+import { CharacterList } from '../sw-components';
 import ItemDetails from '../item-details';
-import { Record } from '../item-details/item-details';
+import Record from '../record';
 import ErrorBoundry from '../error-boundry';
 import Row from '../row';
 
-import { getAllCharacter, getCharacter } from '../../services/api';
+import { getCharacter } from '../../services/api';
 
 import './characterPage.css';
 
@@ -26,20 +26,16 @@ export default class CharacterPage extends Component {
     const { idItem, active } = this.state;
 
     const itemList = (
-      <ItemList
-        selectedItem={this.selectedItem}
-        getData={getAllCharacter}
-        active={active}
-      >
+      <CharacterList selectedItem={this.selectedItem} active={active}>
         {(item) => (
           <span>
             {item.name}, {item.gender}
           </span>
         )}
-      </ItemList>
+      </CharacterList>
     );
 
-    const personDetails = (
+    const characterDetails = (
       <ErrorBoundry>
         <ItemDetails idItem={idItem} getData={getCharacter}>
           <Record field="name" label="name" />
@@ -48,6 +44,6 @@ export default class CharacterPage extends Component {
       </ErrorBoundry>
     );
 
-    return <Row left={itemList} right={personDetails} />;
+    return <Row left={itemList} right={characterDetails} />;
   }
 }

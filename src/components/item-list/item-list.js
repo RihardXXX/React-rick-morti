@@ -1,9 +1,5 @@
 import React from 'react';
 
-import WithData from '../hoc-helpers';
-
-import { getAllCharacter } from '../../services/api';
-
 import './item-list.css';
 var classNames = require('classnames');
 
@@ -33,4 +29,4 @@ const ItemList = ({ data, active, selectedItem, children: renderLabel }) => {
   );
 };
 
-export default WithData(ItemList, getAllCharacter);
+export default ItemList;

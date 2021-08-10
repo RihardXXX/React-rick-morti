@@ -4,17 +4,6 @@ import ErrorMessage from '../error';
 import ErrorButton from '../error-button';
 
 import './item-details.css';
-
-const Record = ({ item, field, label }) => {
-  return (
-    <li className="list-group-item d-flex justify-content-between align-items-center">
-      {label}: {item[field]}
-    </li>
-  );
-};
-
-export { Record };
-
 export default class ItemDetails extends Component {
   state = {
     loading: true,
@@ -83,28 +72,3 @@ export default class ItemDetails extends Component {
     );
   }
 }
-
-// const ItemDetailShow = ({ itemDetail }) => {
-//   const { name, gender, image, species, type } = itemDetail;
-//   return (
-//     <React.Fragment>
-//       <div className="person-detail-img">
-//         <img src={image} alt="img" />
-//       </div>
-//       <div className="random-planet-text">
-//         <h3>{name}</h3>
-//         <ul className="list-group">
-//           <li className="list-group-item d-flex justify-content-between align-items-center">
-//             gender: {gender}
-//           </li>
-//           <li className="list-group-item d-flex justify-content-between align-items-center">
-//             species: {species}
-//           </li>
-//           <li className="list-group-item d-flex justify-content-between align-items-center">
-//             type: {type}
-//           </li>
-//         </ul>
-//       </div>
-//     </React.Fragment>
-//   );
-// };
