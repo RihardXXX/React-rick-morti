@@ -4,6 +4,9 @@ import Header from '../header';
 import RandomCharacter from '../random-character';
 import CharacterPage from '../character-page';
 
+import { ProviderApi } from '../api-context';
+import { getCharacter } from '../../services/api';
+
 import '../../libs/bootstrap.min.css';
 import './app.css';
 
@@ -27,17 +30,19 @@ export default class App extends Component {
 
     return (
       <div className="container">
-        <Header />
-        <div className="row">
-          <div className="col-md-12">{RandomCharacterRender}</div>
-          <button
-            className="toggle-planet btn btn-warning btn-lg col-md-4 m-center m-bottom"
-            onClick={this.onRandomPlanet}
-          >
-            Toggle Random Character
-          </button>
-          <CharacterPage />
-        </div>
+        <ProviderApi value={getCharacter}>
+          <Header />
+          <div className="row">
+            <div className="col-md-12">{RandomCharacterRender}</div>
+            <button
+              className="toggle-planet btn btn-warning btn-lg col-md-4 m-center m-bottom"
+              onClick={this.onRandomPlanet}
+            >
+              Toggle Random Character
+            </button>
+            <CharacterPage />
+          </div>
+        </ProviderApi>
       </div>
     );
   }

@@ -5,10 +5,15 @@ import Record from '../record';
 import ErrorBoundry from '../error-boundry';
 import Row from '../row';
 
-import { getCharacter } from '../../services/api';
+import { ConsumerApi } from '../api-context';
 
 import './characterPage.css';
 
+const getProps = (...args) => {
+  return {
+    ...args,
+  };
+};
 export default class CharacterPage extends Component {
   state = {
     idItem: 1,
@@ -25,6 +30,8 @@ export default class CharacterPage extends Component {
   render() {
     const { idItem, active } = this.state;
 
+    const props = getProps(this.selectedItem, active);
+
     const itemList = (
       <CharacterList selectedItem={this.selectedItem} active={active}>
         {(item) => (
@@ -36,12 +43,18 @@ export default class CharacterPage extends Component {
     );
 
     const characterDetails = (
-      <ErrorBoundry>
-        <ItemDetails idItem={idItem} getData={getCharacter}>
-          <Record field="name" label="name" />
-          <Record field="gender" label="gender" />
-        </ItemDetails>
-      </ErrorBoundry>
+      <ConsumerApi>
+        {(getCharacter) => {
+          return (
+            <ErrorBoundry>
+              <ItemDetails idItem={idItem} getData={getCharacter}>
+                <Record field="name" label="name" />
+                <Record field="gender" label="gender" />
+              </ItemDetails>
+            </ErrorBoundry>
+          );
+        }}
+      </ConsumerApi>
     );
 
     return <Row left={itemList} right={characterDetails} />;
