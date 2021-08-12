@@ -9,11 +9,6 @@ import { ConsumerApi } from '../api-context';
 
 import './characterPage.css';
 
-const getProps = (...args) => {
-  return {
-    ...args,
-  };
-};
 export default class CharacterPage extends Component {
   state = {
     idItem: 1,
@@ -29,8 +24,6 @@ export default class CharacterPage extends Component {
 
   render() {
     const { idItem, active } = this.state;
-
-    const props = getProps(this.selectedItem, active);
 
     const itemList = (
       <CharacterList selectedItem={this.selectedItem} active={active}>

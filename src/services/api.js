@@ -2,13 +2,11 @@ const axios = require('axios');
 
 const instance = axios.create({
   baseURL: 'https://rickandmortyapi.com/api/',
-  // timeout: 1000,
-  // crossDomain: true,
 });
 
 const character = 'character';
-const starships = 'starships';
-// const planets = 'planets';
+const location = 'location';
+const episode = 'episode';
 
 const getResource = async (url) => {
   try {
@@ -25,36 +23,47 @@ const getResource = async (url) => {
 
 // ====
 
-// const getAllPeople = async () => {
-//   const res = await getResource(`/${people}`);
-//   // тут есть пагинация в res
-//   return res.results;
-// };
+// Location
 
-// const getPerson = async (id) => {
-//   const res = await await getResource(`/${people}/${id}`);
-//   return res;
-// };
-
-// ====
-
-const getAllStarships = async () => {
-  const res = await getResource(`/${starships}`);
-  // тут есть пагинация в res
-  return res;
+const transformLocation = (location) => {
+  const { id, name, residents, type, url } = location;
+  return { id, name, residents, type, url };
 };
 
-const getStarship = async (id) => {
-  const res = await await getResource(`/${starships}/${id}`);
-  return res;
+const getAllLocations = async () => {
+  const res = await getResource(`/${location}`);
+  return res.results.map((location) => transformLocation(location));
+};
+
+const getLocation = async (id) => {
+  const res = await getResource(`/${location}/${id}`);
+  return transformLocation(res);
 };
 
 // =================================================================
 
-// const extractId = (item) => {
-//   const regExp = /\/([0-9]+)\/$/;
-//   return item.url.match(regExp)[1];
-// };
+// ====
+
+// Episode
+
+const transformEpisode = (episod) => {
+  const { id, name, episode, air_date, url } = episod;
+  return { id, name, episode, air_date, url };
+};
+
+const getAllEpisode = async () => {
+  const res = await getResource(`/${episode}`);
+  return res.results.map((episode) => transformEpisode(episode));
+};
+
+const getEpisode = async (id) => {
+  const res = await getResource(`/${episode}/${id}`);
+  return transformEpisode(res);
+};
+
+// =================================================================
+
+// Character
 
 const transformCharacter = (character) => {
   const { id, name, gender, image, species, type } = character;
@@ -63,22 +72,19 @@ const transformCharacter = (character) => {
 
 const getAllCharacter = async () => {
   const res = await getResource(`/${character}`);
-  // тут есть пагинация в res
   return res.results.map((item) => transformCharacter(item));
 };
 
 const getCharacter = async (id) => {
   const res = await await getResource(`/${character}/${id}`);
-
   return transformCharacter(res);
 };
 
 export {
-  getResource,
-  // getAllPeople,
-  // getPerson,
-  getAllStarships,
-  getStarship,
+  getAllLocations,
+  getLocation,
   getAllCharacter,
   getCharacter,
+  getAllEpisode,
+  getEpisode,
 };

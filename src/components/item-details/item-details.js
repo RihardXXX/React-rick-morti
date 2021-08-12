@@ -55,7 +55,7 @@ export default class ItemDetails extends Component {
             <ErrorButton />
             <div className="wrapper-person-details">
               <div className="person-detail-img">
-                <img src={itemDetail.image} alt="img" />
+                <Image src={itemDetail.image} alt="img" />
               </div>
               <div className="random-planet-text">
                 <h3>{itemDetail.name}</h3>
@@ -72,3 +72,9 @@ export default class ItemDetails extends Component {
     );
   }
 }
+
+const Image = ({ src }) => {
+  if (!src) return null;
+
+  return <img src={src} alt="img" />;
+};

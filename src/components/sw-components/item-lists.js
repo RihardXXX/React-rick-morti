@@ -2,10 +2,14 @@ import React from 'react';
 import WithData from '../hoc-helpers';
 import ItemList from '../item-list';
 
-import { getAllCharacter } from '../../services/api';
+import {
+  getAllCharacter,
+  getAllLocations,
+  getAllEpisode,
+} from '../../services/api';
 
 const CharacterList = WithData(ItemList, getAllCharacter);
-const LocationList = () => {};
-const EpisoderList = () => {};
+const LocationList = WithData(ItemList, getAllLocations);
+const EpisodeList = WithData(ItemList, getAllEpisode);
 
-export { CharacterList, LocationList, EpisoderList };
+export { CharacterList, LocationList, EpisodeList };

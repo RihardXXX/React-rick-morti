@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import Header from '../header';
 import RandomCharacter from '../random-character';
 import CharacterPage from '../character-page';
+import LocationPage from '../location-page';
+import EpisodePage from '../episode-page';
 
 import { ProviderApi } from '../api-context';
 import { getCharacter } from '../../services/api';
@@ -41,6 +43,10 @@ export default class App extends Component {
               Toggle Random Character
             </button>
             <CharacterPage />
+            <br />
+            <br />
+            {/* <LocationPage /> */}
+            <EpisodePage />
           </div>
         </ProviderApi>
       </div>
