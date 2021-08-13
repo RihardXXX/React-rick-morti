@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Loader from '../loader';
 import ErrorMessage from '../error';
+import PropTypes from 'prop-types';
 
 import { getCharacter } from '../../services/api';
 
@@ -14,8 +15,9 @@ export default class RandomCharacter extends Component {
   };
 
   componentDidMount() {
+    const { updateInterval } = this.props;
     this.updateCharacter();
-    this.interval = setInterval(this.updateCharacter, 2000);
+    this.interval = setInterval(this.updateCharacter, updateInterval);
   }
 
   componentWillUnmount() {
@@ -32,8 +34,6 @@ export default class RandomCharacter extends Component {
 
   updateCharacter = () => {
     const id = Math.floor(Math.random() * 100) + 1;
-    // const id = 50000000000000000;
-    // this.setState((state) => ({ loading: true }));
     getCharacter(id).then(this.onLoadedCharacter).catch(this.onError);
   };
 
@@ -57,6 +57,14 @@ export default class RandomCharacter extends Component {
     );
   }
 }
+
+// RandomCharacter.defaultProps = {
+//   updateInterval: 3000,
+// };
+
+RandomCharacter.propTypes = {
+  updateInterval: PropTypes.number,
+};
 
 const CharacterView = ({ character }) => {
   const { name, gender, image, species, type } = character;

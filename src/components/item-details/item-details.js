@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Loader from '../loader';
 import ErrorMessage from '../error';
 import ErrorButton from '../error-button';
+import PropTypes from 'prop-types';
 
 import './item-details.css';
 export default class ItemDetails extends Component {
@@ -72,6 +73,11 @@ export default class ItemDetails extends Component {
     );
   }
 }
+
+ItemDetails.propTypes = {
+  idItem: PropTypes.number,
+  getData: PropTypes.func,
+};
 
 const Image = ({ src }) => {
   if (!src) return null;

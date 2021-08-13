@@ -27,7 +27,7 @@ export default class App extends Component {
     const { randomPlanetStatus } = this.state;
 
     const RandomCharacterRender = randomPlanetStatus ? (
-      <RandomCharacter />
+      <RandomCharacter updateInterval={5000} />
     ) : null;
 
     return (
@@ -46,7 +46,7 @@ export default class App extends Component {
             <br />
             <br />
             {/* <LocationPage /> */}
-            <EpisodePage />
+            {/* <EpisodePage /> */}
           </div>
         </ProviderApi>
       </div>

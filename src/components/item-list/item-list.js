@@ -29,4 +29,10 @@ const ItemList = ({ data, active, selectedItem, children: renderLabel }) => {
   );
 };
 
+ItemList.defaultProps = {
+  active: 1,
+  selectedItem: () => {},
+  renderLabel: (item) => item.name,
+};
+
 export default ItemList;
