@@ -84,3 +84,9 @@ const Image = ({ src }) => {
 
   return <img src={src} alt="img" />;
 };
+
+const useState = (value) => {
+  const prop = value;
+  const setProps = (value) => (prop = value);
+  return [prop, setProps];
+};

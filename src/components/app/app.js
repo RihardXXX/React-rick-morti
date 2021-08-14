@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import Header from '../header';
 import RandomCharacter from '../random-character';
@@ -12,44 +12,36 @@ import { getCharacter } from '../../services/api';
 import '../../libs/bootstrap.min.css';
 import './app.css';
 
-export default class App extends Component {
-  state = {
-    randomPlanetStatus: true,
+const App = () => {
+  const [randomPlanetStatus, setRandomPlanetStatus] = useState(true);
+
+  const onRandomPlanet = () => {
+    setRandomPlanetStatus((randomPlanetStatus) => !randomPlanetStatus);
   };
 
-  onRandomPlanet = () => {
-    this.setState(({ randomPlanetStatus }) => ({
-      randomPlanetStatus: !randomPlanetStatus,
-    }));
-  };
+  const RandomCharacterRender = randomPlanetStatus ? (
+    <RandomCharacter updateInterval={5000} />
+  ) : null;
 
-  render() {
-    const { randomPlanetStatus } = this.state;
+  return (
+    <div className="container">
+      <ProviderApi value={getCharacter}>
+        <Header />
+        <div className="row">
+          <div className="col-md-12">{RandomCharacterRender}</div>
+          <button
+            className="toggle-planet btn btn-warning btn-lg col-md-4 m-center m-bottom"
+            onClick={onRandomPlanet}
+          >
+            Toggle Random Character
+          </button>
+          <CharacterPage />
+          <br />
+          <br />
+        </div>
+      </ProviderApi>
+    </div>
+  );
+};
 
-    const RandomCharacterRender = randomPlanetStatus ? (
-      <RandomCharacter updateInterval={5000} />
-    ) : null;
-
-    return (
-      <div className="container">
-        <ProviderApi value={getCharacter}>
-          <Header />
-          <div className="row">
-            <div className="col-md-12">{RandomCharacterRender}</div>
-            <button
-              className="toggle-planet btn btn-warning btn-lg col-md-4 m-center m-bottom"
-              onClick={this.onRandomPlanet}
-            >
-              Toggle Random Character
-            </button>
-            <CharacterPage />
-            <br />
-            <br />
-            {/* <LocationPage /> */}
-            {/* <EpisodePage /> */}
-          </div>
-        </ProviderApi>
-      </div>
-    );
-  }
-}
+export default App;

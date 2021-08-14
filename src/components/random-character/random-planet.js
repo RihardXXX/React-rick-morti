@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Loader from '../loader';
 import ErrorMessage from '../error';
 import PropTypes from 'prop-types';
@@ -7,56 +7,58 @@ import { getCharacter } from '../../services/api';
 
 import './random-planet.css';
 
-export default class RandomCharacter extends Component {
-  state = {
-    character: {},
-    loading: true,
-    error: false,
+const RandomCharacter = ({ updateInterval }) => {
+  const [character, setCharacter] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [timer, setTimer] = useState(null);
+
+  const onLoadedCharacter = (character) => {
+    setLoading((loading) => !loading);
+    setCharacter(character);
   };
 
-  componentDidMount() {
-    const { updateInterval } = this.props;
-    this.updateCharacter();
-    this.interval = setInterval(this.updateCharacter, updateInterval);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  onLoadedCharacter = (character) => {
-    this.setState((state) => ({ character: character, loading: false }));
+  const onError = () => {
+    setLoading((loading) => !loading);
+    setError((error) => !error);
   };
 
-  onError = () => {
-    this.setState((state) => ({ loading: false, error: true }));
-  };
-
-  updateCharacter = () => {
+  const updateCharacter = () => {
+    console.log('updateCharacter');
     const id = Math.floor(Math.random() * 100) + 1;
-    getCharacter(id).then(this.onLoadedCharacter).catch(this.onError);
+    setLoading((loading) => !loading);
+    getCharacter(id).then(onLoadedCharacter).catch(onError);
   };
 
-  render() {
-    const { character, loading, error } = this.state;
+  useEffect(() => {
+    updateCharacter();
+    const tm = setInterval(updateCharacter, updateInterval);
+    setTimer(tm);
+    console.log(tm);
+    return () => {
+      console.log(timer);
+      clearInterval(timer);
+      // setTimer(clearInterval(timer));
+      console.log(timer);
+    };
+  }, []);
 
-    const errorMsg = error ? <ErrorMessage /> : null;
-    const loadingView = loading ? <Loader /> : null;
-    const characterView = !(loading || error) ? (
-      <CharacterView character={character} />
-    ) : null;
+  const errorMsg = error ? <ErrorMessage /> : null;
+  const loadingView = loading ? <Loader /> : null;
+  const characterView = !(loading || error) ? (
+    <CharacterView character={character} />
+  ) : null;
 
-    return (
-      <div className="random-planet">
-        <div className="card border-primary mb-3">
-          {errorMsg}
-          {loadingView}
-          {characterView}
-        </div>
+  return (
+    <div className="random-planet">
+      <div className="card border-primary mb-3">
+        {errorMsg}
+        {loadingView}
+        {characterView}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 // RandomCharacter.defaultProps = {
 //   updateInterval: 3000,
@@ -95,3 +97,5 @@ const CharacterView = ({ character }) => {
     </React.Fragment>
   );
 };
+
+export default RandomCharacter;
