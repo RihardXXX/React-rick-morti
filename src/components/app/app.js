@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import Header from '../header';
 import RandomCharacter from '../random-character';
@@ -6,11 +6,13 @@ import CharacterPage from '../character-page';
 import LocationPage from '../location-page';
 import EpisodePage from '../episode-page';
 
-import { ProviderApi } from '../api-context';
+// import { ProviderApi } from '../api-context';
 import { getCharacter } from '../../services/api';
 
 import '../../libs/bootstrap.min.css';
 import './app.css';
+
+const myContext = React.createContext();
 
 const App = () => {
   const [randomPlanetStatus, setRandomPlanetStatus] = useState(true);
@@ -25,7 +27,7 @@ const App = () => {
 
   return (
     <div className="container">
-      <ProviderApi value={getCharacter}>
+      <myContext.Provider value={getCharacter}>
         <Header />
         <div className="row">
           <div className="col-md-12">{RandomCharacterRender}</div>
@@ -39,9 +41,10 @@ const App = () => {
           <br />
           <br />
         </div>
-      </ProviderApi>
+      </myContext.Provider>
     </div>
   );
 };
 
 export default App;
+export { myContext };

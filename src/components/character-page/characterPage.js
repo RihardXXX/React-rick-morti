@@ -1,55 +1,44 @@
-import React, { Component } from 'react';
+import React, { useState, useContext } from 'react';
 import { CharacterList } from '../sw-components';
 import ItemDetails from '../item-details';
 import Record from '../record';
 import ErrorBoundry from '../error-boundry';
 import Row from '../row';
-
-import { ConsumerApi } from '../api-context';
+import { myContext } from '../app';
 
 import './characterPage.css';
 
-export default class CharacterPage extends Component {
-  state = {
-    idItem: 1,
-    active: null,
+const CharacterPage = () => {
+  const [idItem, setIdItem] = useState(1);
+  const [active, setActive] = useState(null);
+
+  const value = useContext(myContext);
+
+  const selectedItem = (id) => {
+    setIdItem(id);
+    setActive(id);
   };
 
-  selectedItem = (id) => {
-    this.setState((state) => ({
-      idItem: id,
-      active: id,
-    }));
-  };
+  const itemList = (
+    <CharacterList selectedItem={selectedItem} active={active}>
+      {(item) => (
+        <span>
+          {item.name}, {item.gender}
+        </span>
+      )}
+    </CharacterList>
+  );
 
-  render() {
-    const { idItem, active } = this.state;
+  const characterDetails = (
+    <ErrorBoundry>
+      <ItemDetails idItem={idItem} getData={value}>
+        <Record field="name" label="name" />
+        <Record field="gender" label="gender" />
+      </ItemDetails>
+    </ErrorBoundry>
+  );
 
-    const itemList = (
-      <CharacterList selectedItem={this.selectedItem} active={active}>
-        {(item) => (
-          <span>
-            {item.name}, {item.gender}
-          </span>
-        )}
-      </CharacterList>
-    );
+  return <Row left={itemList} right={characterDetails} />;
+};
 
-    const characterDetails = (
-      <ConsumerApi>
-        {(getCharacter) => {
-          return (
-            <ErrorBoundry>
-              <ItemDetails idItem={idItem} getData={getCharacter}>
-                <Record field="name" label="name" />
-                <Record field="gender" label="gender" />
-              </ItemDetails>
-            </ErrorBoundry>
-          );
-        }}
-      </ConsumerApi>
-    );
-
-    return <Row left={itemList} right={characterDetails} />;
-  }
-}
+export default CharacterPage;

@@ -11,7 +11,6 @@ const RandomCharacter = ({ updateInterval }) => {
   const [character, setCharacter] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [timer, setTimer] = useState(null);
 
   const onLoadedCharacter = (character) => {
     setLoading((loading) => !loading);
@@ -24,7 +23,6 @@ const RandomCharacter = ({ updateInterval }) => {
   };
 
   const updateCharacter = () => {
-    console.log('updateCharacter');
     const id = Math.floor(Math.random() * 100) + 1;
     setLoading((loading) => !loading);
     getCharacter(id).then(onLoadedCharacter).catch(onError);
@@ -32,15 +30,8 @@ const RandomCharacter = ({ updateInterval }) => {
 
   useEffect(() => {
     updateCharacter();
-    const tm = setInterval(updateCharacter, updateInterval);
-    setTimer(tm);
-    console.log(tm);
-    return () => {
-      console.log(timer);
-      clearInterval(timer);
-      // setTimer(clearInterval(timer));
-      console.log(timer);
-    };
+    const interval = setInterval(updateCharacter, updateInterval);
+    return () => clearInterval(interval);
   }, []);
 
   const errorMsg = error ? <ErrorMessage /> : null;
