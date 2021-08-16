@@ -1,78 +1,74 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Loader from '../loader';
 import ErrorMessage from '../error';
 import ErrorButton from '../error-button';
 import PropTypes from 'prop-types';
 
 import './item-details.css';
-export default class ItemDetails extends Component {
-  state = {
-    loading: true,
-    itemDetail: null,
-    error: false,
+
+const ItemDetails = ({ idItem, getData, children }) => {
+  const [loading, setLoading] = useState(true);
+  const [itemDetail, setItemDetail] = useState(null);
+  const [error, setError] = useState(null);
+
+  const setItem = (itemDetail) => {
+    setLoading(false);
+    setItemDetail(itemDetail);
   };
 
-  componentDidMount() {
-    this.onLoadedItemDetail();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.idItem !== prevProps.idItem) {
-      this.onLoadedItemDetail();
-    }
-  }
-
-  setItemDetail = (itemDetail) => {
-    this.setState((state) => ({ loading: false, itemDetail: itemDetail }));
+  const onError = (err) => {
+    setError(err);
   };
 
-  onError = (err) => {
-    this.setState((state) => ({ error: true }));
-  };
-
-  onLoadedItemDetail() {
-    const { idItem, getData } = this.props;
+  const onLoadedItemDetail = () => {
     if (!idItem) return;
+    setLoading(true);
+    getData(idItem).then(setItem).catch(onError);
+  };
 
-    this.setState((state) => ({ loading: true }));
-    getData(idItem).then(this.setItemDetail).catch(this.onError);
+  useEffect(() => {
+    onLoadedItemDetail();
+  }, [idItem]);
+
+  if (loading) {
+    return <Loader />;
   }
 
-  render() {
-    const { loading, itemDetail, error } = this.state;
+  if (error) {
+    return <ErrorMessage />;
+  }
 
-    if (loading) {
-      return <Loader />;
-    }
+  let result;
 
-    if (error) {
-      return <ErrorMessage />;
-    }
-
-    return (
-      <div className="person-details">
-        <div className="card border-primary mb-3">
-          <div className="card-body">
-            <ErrorButton />
-            <div className="wrapper-person-details">
-              <div className="person-detail-img">
-                <Image src={itemDetail.image} alt="img" />
-              </div>
-              <div className="random-planet-text">
-                <h3>{itemDetail.name}</h3>
-                <ul className="list-group">
-                  {React.Children.map(this.props.children, (child) => {
-                    return React.cloneElement(child, { item: itemDetail });
-                  })}
-                </ul>
-              </div>
-            </div>
+  if (itemDetail) {
+    result = (
+      <React.Fragment>
+        <ErrorButton />
+        <div className="wrapper-person-details">
+          <div className="person-detail-img">
+            <Image src={itemDetail.image} alt="img" />
+          </div>
+          <div className="random-planet-text">
+            <h3>{itemDetail.name}</h3>
+            <ul className="list-group">
+              {React.Children.map(children, (child) => {
+                return React.cloneElement(child, { item: itemDetail });
+              })}
+            </ul>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
-}
+
+  return (
+    <div className="person-details">
+      <div className="card border-primary mb-3">
+        <div className="card-body">{result}</div>
+      </div>
+    </div>
+  );
+};
 
 ItemDetails.propTypes = {
   idItem: PropTypes.number,
@@ -85,8 +81,4 @@ const Image = ({ src }) => {
   return <img src={src} alt="img" />;
 };
 
-const useState = (value) => {
-  const prop = value;
-  const setProps = (value) => (prop = value);
-  return [prop, setProps];
-};
+export default ItemDetails;
