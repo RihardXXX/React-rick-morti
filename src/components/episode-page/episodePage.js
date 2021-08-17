@@ -39,7 +39,7 @@ export default class EpisodePage extends Component {
       <ErrorBoundry>
         <ItemDetails idItem={idItem} getData={getEpisode}>
           <Record field="name" label="name" />
-          <Record field="gender" label="gender" />
+          <Record field="episode" label="episode" />
         </ItemDetails>
       </ErrorBoundry>
     );

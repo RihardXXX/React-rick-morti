@@ -39,7 +39,7 @@ export default class LocationPage extends Component {
       <ErrorBoundry>
         <ItemDetails idItem={idItem} getData={getLocation}>
           <Record field="name" label="name" />
-          <Record field="gender" label="gender" />
+          <Record field="type" label="type" />
         </ItemDetails>
       </ErrorBoundry>
     );

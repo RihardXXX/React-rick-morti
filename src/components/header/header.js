@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 import './header.css';
 
 const Header = () => {
@@ -8,10 +10,10 @@ const Header = () => {
   const links = names.map((name) => {
     return (
       <li className="nav-item" key={name}>
-        <a className="nav-link active">
+        <Link className="nav-link" to={name}>
           {name}
           <span className="visually-hidden">(current)</span>
-        </a>
+        </Link>
       </li>
     );
   });
@@ -19,9 +21,9 @@ const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark header">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
+        <Link className="navbar-brand" to="/">
           Rick and Morty
-        </a>
+        </Link>
         <div className="collapse navbar-collapse" id="navbarColor02">
           <ul className="navbar-nav me-auto m-center ">{links}</ul>
         </div>

@@ -71,7 +71,7 @@ const ItemDetails = ({ idItem, getData, children }) => {
 };
 
 ItemDetails.propTypes = {
-  idItem: PropTypes.number,
+  // idItem: PropTypes.number,
   getData: PropTypes.func,
 };
 
