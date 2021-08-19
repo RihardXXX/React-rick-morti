@@ -1,49 +1,28 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { LocationList } from '../sw-components';
-import ItemDetails from '../item-details';
-import Record from '../record';
-import ErrorBoundry from '../error-boundry';
-import Row from '../row';
-
-import { getLocation } from '../../services/api';
+import { withRouter } from 'react-router-dom';
 
 import './locationPage.css';
 
-export default class LocationPage extends Component {
-  state = {
-    idItem: 1,
-    active: null,
-  };
+const LocationPage = ({ history }) => {
+  const [itemId, setItemId] = useState(1);
 
-  selectedItem = (id) => {
-    this.setState((state) => ({
-      idItem: id,
-      active: id,
-    }));
-  };
+  const itemList = (
+    <LocationList
+      selectedItem={(itemId) => {
+        history.push(`/location/${itemId}`);
+      }}
+      active={itemId}
+    >
+      {(item) => (
+        <span>
+          {item.name}, {item.type}
+        </span>
+      )}
+    </LocationList>
+  );
 
-  render() {
-    const { idItem, active } = this.state;
+  return itemList;
+};
 
-    const itemList = (
-      <LocationList selectedItem={this.selectedItem} active={active}>
-        {(item) => (
-          <span>
-            {item.name}, {item.type}
-          </span>
-        )}
-      </LocationList>
-    );
-
-    const itemDetails = (
-      <ErrorBoundry>
-        <ItemDetails idItem={idItem} getData={getLocation}>
-          <Record field="name" label="name" />
-          <Record field="type" label="type" />
-        </ItemDetails>
-      </ErrorBoundry>
-    );
-
-    return <Row left={itemList} right={itemDetails} />;
-  }
-}
+export default withRouter(LocationPage);

@@ -11,7 +11,7 @@ import Record from '../record';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import { getEpisode } from '../../services/api';
+import { getLocation } from '../../services/api';
 
 // import { ProviderApi } from '../api-context';
 import { getCharacter } from '../../services/api';
@@ -50,17 +50,22 @@ const App = () => {
               exact
               render={() => <h2>Welcome to Ricky Morty application</h2>}
             />
-            <Route path="/character" render={() => <h2>Page Character</h2>} />
-            <Route path="/character" component={CharacterPage} />
-            <Route path="/location" component={LocationPage} />
-            <Route path="/episode" exact component={EpisodePage} />
+            <Route path="/character/" render={() => <h2>Page Character</h2>} />
+            <Route path="/character/:id?" component={CharacterPage} />
+            <Route path="/location/" exact component={LocationPage} />
             <Route
-              path="/episode/:id"
+              path="/location/:id"
               render={({ match }) => {
                 const { id } = match.params;
-                return <ItemDetails idItem={+id} getData={getEpisode} />;
+                return (
+                  <ItemDetails idItem={+id} getData={getLocation}>
+                    <Record field="name" label="name" />
+                    <Record field="type" label="type" />
+                  </ItemDetails>
+                );
               }}
             />
+            <Route path="/episode/" exact component={EpisodePage} />
           </div>
         </myContext.Provider>
       </Router>

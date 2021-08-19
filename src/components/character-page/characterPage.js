@@ -5,22 +5,21 @@ import Record from '../record';
 import ErrorBoundry from '../error-boundry';
 import Row from '../row';
 import { myContext } from '../app';
+import { withRouter } from 'react-router-dom';
 
 import './characterPage.css';
 
-const CharacterPage = () => {
-  const [idItem, setIdItem] = useState(1);
-  const [active, setActive] = useState(null);
-
+const CharacterPage = ({ match, history }) => {
   const value = useContext(myContext);
-
-  const selectedItem = (id) => {
-    setIdItem(id);
-    setActive(id);
-  };
+  const { id } = match.params;
 
   const itemList = (
-    <CharacterList selectedItem={selectedItem} active={active}>
+    <CharacterList
+      selectedItem={(id) => {
+        history.push(`${id}`);
+      }}
+      active={id}
+    >
       {(item) => (
         <span>
           {item.name}, {item.gender}
@@ -31,7 +30,7 @@ const CharacterPage = () => {
 
   const characterDetails = (
     <ErrorBoundry>
-      <ItemDetails idItem={idItem} getData={value}>
+      <ItemDetails idItem={id} getData={value}>
         <Record field="name" label="name" />
         <Record field="gender" label="gender" />
       </ItemDetails>
@@ -41,4 +40,4 @@ const CharacterPage = () => {
   return <Row left={itemList} right={characterDetails} />;
 };
 
-export default CharacterPage;
+export default withRouter(CharacterPage);
