@@ -5,7 +5,13 @@ import { Link } from 'react-router-dom';
 import './header.css';
 
 const Header = () => {
-  const names = ['character/', 'location/', 'episode/'];
+  const names = [
+    '/character/',
+    '/location/',
+    '/episode/',
+    '/loginPage/',
+    '/secretPage/',
+  ];
 
   const links = names.map((name) => {
     return (
